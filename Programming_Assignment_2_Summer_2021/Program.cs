@@ -1,39 +1,41 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Programming_Assignment_2_Summer_2021
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            //Question1:
-            Console.WriteLine("Question 1");
-            int[] nums1 = { 2, 5, 1, 3, 4, 7 };
-            int[] nums2 = { 2, 1, 4, 7 };
-            Intersection(nums1, nums2);
-            Console.WriteLine("");
+            //Question1
+              Console.WriteLine("Question 1");
+              int[] nums1 = { 2, 5, 1, 3, 4, 7 };
+              int[] nums2 = { 2, 1, 4, 7 };
+              Intersection(nums1, nums2);
+              Console.WriteLine("\n");
 
-            //Question 2 
-            Console.WriteLine("Question 2");
-            int[] nums = { 0, 1, 0, 3, 12 };
-            Console.WriteLine("Enter the target number:");
-            int target = Int32.Parse(Console.ReadLine());
-            int pos=SearchInsert(nums,target);
-            Console.WriteLine("Insert Position of the target is : {0}", pos);
-            Console.WriteLine("");
+
+              //Question2 
+              Console.WriteLine("Question 2");
+              int[] nums = { 0, 1, 0, 3, 12 };
+              Console.WriteLine("Enter the target number:");
+              int target = Int32.Parse(Console.ReadLine());
+              int pos = SearchInsert(nums, target);
+              Console.WriteLine("Insert Position of the target is : {0}", pos);
+              Console.WriteLine("");  
 
             //Question3
             Console.WriteLine("Question 3");
             int[] ar3 = { 1, 2, 3, 1, 1, 3 };
-            int Lnum=LuckyNumber(ar3);
+            int Lnum = LuckyNumber(ar3);
             if (Lnum == -1)
                 Console.WriteLine("Given Array doesn't have any lucky Integer");
             else
                 Console.WriteLine("Lucky Integer for given array {0}", Lnum);
 
             Console.WriteLine();
+        
 
             //Question 4
             Console.WriteLine("Question 4");
@@ -73,98 +75,111 @@ namespace Programming_Assignment_2_Summer_2021
             int[] arr = { 1, 2, 3, 4, 5, 6, 7 };
             int K = 3;
             RotateArray(arr, K);
-
-            Console.WriteLine();
+            Console.WriteLine("\n");
 
             //Question 9
             Console.WriteLine("Question 9");
             int[] arr9 = { 7, 1, 5, 3, 6, 4 };
             int Ms = MaximumSum(arr9);
-            Console.WriteLine("Maximun Sum contiguous subarray {0}", Ma);   
+            Console.WriteLine("Maximun Sum contiguous subarray {0}", Ms);
             Console.WriteLine();
 
             //Question 10
             Console.WriteLine("Question 10");
             int[] costs = { 10, 15, 20 };
-            int minCost=MinCostToClimb(costs);
+            int minCost = MinCostToClimb(costs);
             Console.WriteLine("Minium cost to climb the top stair {0}", minCost);
             Console.WriteLine();
         }
 
         //Question 1
-        /// <summary>
-        //Given two integer arrays nums1 and nums2, return an array of their intersection.
-        //Each element in the result must be unique and you may return the result in any order.
-        //Example 1:
-        //Input: nums1 = [1,2,2,1], nums2 = [2,2]
-        //Output: [2]
-        //Example 2:
-        //Input: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
-        //Output: [9,4]
-        //
-        /// </summary>
+
+
 
         public static void Intersection(int[] nums1, int[] nums2)
         {
             try
             {
-                //write your code here.
+                var comman_elements = nums1.Intersect(nums2);
+                foreach (int elements in comman_elements)
+                {
+                    Console.Write(elements + " ");
+                }
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
 
-        //Question 2:
-        /// <summary>
-        //Given a sorted array of distinct integers and a target value, return the index if the target is found.If not, return the index where it would be if it were inserted in order.
-        //Note: You must write an algorithm with O(log n) runtime complexity.
-        //Example 1:
-        //Input: nums = [1, 3, 5, 6], target = 5
-        //Output: 2
-        //Example 2:
-        //Input: nums = [1, 3, 5, 6], target = 2
-        //Output: 1
-        //Example 3:
-        //Input: nums = [1, 3, 5, 6], target = 7
-        //Output: 4
-        //Example 4:
-        //Input: nums = [1, 3, 5, 6], target = 0
-        //Output: 0
-        /// </summary>
 
+        /* Que 1 Self-reflection
+         * Learned the use of Enumerable.Intersect Method from system.Linq
+         * Complexity is O(M+N) since Intersect will build hashset for second sequence and use 
+         * every value against it. */
+
+        //Question 2
         public static int SearchInsert(int[] nums, int target)
         {
             try
             {
-                //Write your Code here.
+
+                int low = 0;
+                int high = nums.Length - 1;
+                int mid = high / 2;
+                while (high != low)
+                {
+                    if (target == nums[mid]) return mid;
+                    else if (target < nums[mid])
+                    {
+                        high = mid;
+                        mid = (high - low) / 2 + low;
+                    }
+                    else
+                    {
+                        low = mid + 1;
+                        mid = (high - low) / 2 + low;
+                    }
+                }
+                return target > nums[high] ? high + 1 : high;
                 return -1;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw;
             }
-        }
+        }   
+
+        /* Que 2 Self-reflection
+        * Implemented binary search
+        * Time Complexity is O(logn)
+        * Space Complexity is O(1) */
+
 
 
         //Question 3
-        /// <summary>
-        //Given an array of integers arr, a lucky integer is an integer which has a frequency in the array equal to its value.
-        //Return a lucky integer in the array. If there are multiple lucky integers return the largest of them. If there is no lucky integer return -1.
-        //Example 1:
-        //Input: arr = [2, 2, 3, 4]
-        //Output: 2
-        //Explanation: The only lucky number in the array is 2 because frequency[2] == 2.
-        /// </summary>
 
-        private static int LuckyNumber(int[] nums)
+        private static int LuckyNumber(int[] ar3)
         {
             try
             {
-                //write your code here.
+                Array.Sort(ar3);
+                int count = 1;
+
+                for (int i = ar3.Length - 2; i > -1; i--)
+                {
+                    if (ar3[i] == ar3[i + 1]) count++;
+                    else
+                    {
+                        if (ar3[i + 1] == count) return count;
+                        count = 1;
+                    }
+                }
+
+                if (count == ar3[0]) return count;
+
                 return -1;
+
             }
             catch (Exception)
             {
@@ -173,36 +188,36 @@ namespace Programming_Assignment_2_Summer_2021
             }
         }
 
-        //Question 4:
-        /// <summary>
-        //You are given an integer n.An array nums of length n + 1 is generated in the following way:
-        //•	nums[0] = 0
-        //•	nums[1] = 1
-        //•	nums[2 * i] = nums[i]  when 2 <= 2 * i <= n
-        //•	nums[2 * i + 1] = nums[i] + nums[i + 1] when 2 <= 2 * i + 1 <= n
-       // Return the maximum integer in the array nums.
+        //Question 4
 
-        //Example 1:
-        //Input: n = 7
-        //Output: 3
-        //Explanation: According to the given rules:
-        //nums[0] = 0
-        //nums[1] = 1
-        //nums[(1 * 2) = 2] = nums[1] = 1
-        //nums[(1 * 2) + 1 = 3] = nums[1] + nums[2] = 1 + 1 = 2
-        //nums[(2 * 2) = 4] = nums[2] = 1
-        //nums[(2 * 2) + 1 = 5] = nums[2] + nums[3] = 1 + 2 = 3
-        //nums[(3 * 2) = 6] = nums[3] = 2
-        //nums[(3 * 2) + 1 = 7] = nums[3] + nums[4] = 2 + 1 = 3
-        //Hence, nums = [0, 1, 1, 2, 1, 3, 2, 3], and the maximum is 3.
-
-        /// </summary>
-        private static int  GenerateNums(int n)
+        private static int GenerateNums(int n)
         {
             try
             {
-                //write your code here.
-                return -1;
+                {
+                    int[] result = new int[n + 1];
+
+                    if (n < 2)
+                    {
+                        return n;
+                    }
+
+                    result[1] = 1;
+
+                    for (int i = 1; 2 * i <= n; i++)
+                    {
+                        int next = 2 * i;
+                        result[next] = result[i];
+
+                        if (next + 1 <= n)
+                        {
+                            result[next + 1] = result[i] + result[i + 1];
+                        }
+                    }
+
+                    return result.Max();
+                    return -1;
+                }
             }
             catch (Exception)
             {
@@ -211,22 +226,34 @@ namespace Programming_Assignment_2_Summer_2021
             }
 
         }
+
+        /* Que 4 Self-reflection
+        * Time Complexity is O(N)
+        * Space Complexity is O(1) */
 
         //Question 5
-        /// <summary>
-        //You are given the array paths, where paths[i] = [cityAi, cityBi] means there exists a direct path going from cityAi to cityBi.Return the destination city, that is, the city without any path outgoing to another city.
-        //It is guaranteed that the graph of paths forms a line without any loop, therefore, there will be exactly one destination city.
-        //Example 1:
-        //Input: paths = [["London", "New York"], ["New York","Lima"], ["Lima","Sao Paulo"]]
-        //Output: "Sao Paulo" 
-        //Explanation: Starting at "London" city you will reach "Sao Paulo" city which is the destination city.Your trip consist of: "London" -> "New York" -> "Lima" -> "Sao Paulo".
-        /// </summary>
+
         public static string DestCity(List<List<string>> paths)
         {
             try
             {
-                //write your code here.
-                return "";
+                var start = new HashSet<string>();
+                var end = new HashSet<string>();
+                foreach (var path in paths)
+                {
+                    if (end.Contains(path[0]))
+                        end.Remove(path[0]);
+                    else
+                        start.Add(path[0]);
+
+                    if (start.Contains(path[1]))
+                        start.Remove(path[1]);
+                    else
+                        end.Add(path[1]);
+                }
+
+                return end.First();
+
             }
             catch (Exception)
             {
@@ -235,24 +262,39 @@ namespace Programming_Assignment_2_Summer_2021
             }
         }
 
-        //Question 6:
-        /// <summary>
-        //Given an array of integers numbers that is already sorted in non-decreasing order, find two numbers such that they add up to a specific target number.
-        //Print the indices of the two numbers (1-indexed) as an integer array answer of size 2, where 1 <= answer[0] < answer[1] <= numbers.Length.
-        //You may not use the same element twice, there will be only one solution for a given array
-        //Example 1:
-        //Input: numbers = [2,7,11,15], target = 9
-        //Output: [1,2]
-        //Explanation: The sum of 2 and 7 is 9. Therefore index1 = 1, index2 = 2.
+        /* Que 4 Self-reflection
+         * Implemented 2 hashsets 
+         * Time Complexity is O(N)
+         * Space Complexity is O(1) */
 
-        /// </summary>
-        private static void targetSum(int[] nums,int target)
+
+        //Question 6
+
+        private static void targetSum(int[] nums, int target)
         {
             try
             {
-                //write your code here.
+
+                int i = 0;
+                int j = 1;
+                while (j < nums.Length)
+                {
+                    if (nums[i] + nums[j] == target)
+                        break;
+                    else if (nums[i] + nums[j] < target)
+                    {
+                        i++;
+                        j++;
+                    }
+                    else if (nums[i] + nums[j] > target)
+                        i--;
+                }
+                Console.WriteLine("[" + (i + 1) + "," + (j + 1) + "]");
+                return;
+
 
             }
+
             catch (Exception)
             {
 
@@ -260,32 +302,48 @@ namespace Programming_Assignment_2_Summer_2021
             }
         }
 
+
+        /* Que 6 Self-reflection
+         * Time Complexity is O(N)
+         * Space Complexity is O(1) */
+
         //Question 7
-        /// <summary>
-        /// Given a list of the scores of different students, items, where items[i] = [IDi, scorei] represents one score from a student with IDi, calculate each student's top five average.
-        /// Print the answer as an array of pairs result, where result[j] = [IDj, topFiveAveragej] represents the student with IDj and their top five average.Sort result by IDj in increasing order.
-        /// A student's top five average is calculated by taking the sum of their top five scores and dividing it by 5 using integer division.
-        /// Example 1:
-        /// Input: items = [[1, 91], [1,92], [2,93], [2,97], [1,60], [2,77], [1,65], [1,87], [1,100], [2,100], [2,76]]
-        /// Output: [[1,87],[2,88]]
-        /// Explanation: 
-        /// The student with ID = 1 got scores 91, 92, 60, 65, 87, and 100. Their top five average is (100 + 92 + 91 + 87 + 65) / 5 = 87.
-        /// The student with ID = 2 got scores 93, 97, 77, 100, and 76. Their top five average is (100 + 97 + 93 + 77 + 76) / 5 = 88.6, but with integer division their average converts to 88.
-        /// Example 2:
-        /// Input: items = [[1,100],[7,100],[1,100],[7,100],[1,100],[7,100],[1,100],[7,100],[1,100],[7,100]]
-        /// Output: [[1,100],[7,100]]
-        /// Constraints:
-        /// 1 <= items.length <= 1000
-        /// items[i].length == 2
-        /// 1 <= IDi <= 1000
-        /// 0 <= scorei <= 100
-        /// For each IDi, there will be at least five scores.
-        /// </summary>
         private static void HighFive(int[,] items)
         {
             try
             {
-                //write your code here.
+                Dictionary<int, List<int>> map = new Dictionary<int, List<int>>();
+                var marks = new List<int>();
+                for (int i = 0; i < items.Length / 2; i++)
+                {
+                    if (!map.ContainsKey(items[i, 0]))
+                    {
+                      
+                        marks = new List<int>();
+                        map.Add(items[i, 0], marks);
+                    }
+                    else
+                    {
+                        marks = map[items[i, 0]];
+                    }
+                    marks.Add(items[i, 1]);
+                    map[items[i, 0]] = marks;
+                }
+                foreach (var pair in map)
+                {
+                    int key = pair.Key;
+                    List<int> value = pair.Value;
+                    value.Sort();
+                    value.Reverse();
+                    int sum = 0;
+                    for (int i = 0; i < 5; i++)
+                    {
+
+                        sum = sum + value[i];
+                    }
+
+                    Console.WriteLine("[" + key + "," + sum / 5 + "]");
+                }
 
             }
             catch (Exception)
@@ -295,31 +353,34 @@ namespace Programming_Assignment_2_Summer_2021
             }
         }
 
-        //Question 8
-        /// <summary>
-        //Given an array, rotate the array to the right by k steps, where k is non-negative.
-        //Print the Final array after rotation.
-        //Example 1:
-        //Input: nums = [1, 2, 3, 4, 5, 6, 7], k = 3
-        //Output: [5,6,7,1,2,3,4]
-        //Explanation:
-        //rotate 1 steps to the right: [7,1,2,3,4,5,6]
-        //rotate 2 steps to the right: [6,7,1,2,3,4,5]
-        //rotate 3 steps to the right: [5,6,7,1,2,3,4]
-        //Example 2:
-        //Input: nums = [-1,-100,3,99], k = 2
-        //Output: [3,99,-1,-100]
-        //Explanation: 
-        //rotate 1 steps to the right: [99,-1,-100,3]
-        //rotate 2 steps to the right: [3,99,-1,-100]
-        /// </summary>
 
-        private static void RotateArray(int[] arr,int n)
+        /* Que 7 Self-reflection
+         * Implemented Dictionary 
+         * Time Complexity is O(N)
+         * Space Complexity is O(1) */
+
+        //Question 8
+
+        public static void RotateArray(int[] arr, int n)
         {
             try
             {
-                //write your code here.
-           
+
+                int length = arr.Length;
+                n = n % length;
+
+                for (int i = 0; i < length; i++)
+                {
+                   
+                    if (i < n)
+                    {
+                        Console.Write(arr[length + i - n] + " ");
+                    }
+                    else
+                    {
+                        Console.Write(arr[i - n] + " ");
+                    }
+                }
             }
             catch (Exception)
             {
@@ -328,27 +389,26 @@ namespace Programming_Assignment_2_Summer_2021
             }
         }
 
-        //Question 9
-        /// <summary>
-        //Given an integer array nums, find the contiguous subarray(containing at least one number) which has the largest sum and return its sum
-        //Example 1:
-        //Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
-        //Output: 6
-        //Explanation: [4,-1,2,1] has the largest sum = 6.
-        //Example 2:
-        //Input: nums = [1]
-        //Output: 1
-       // Example 3:
-       // Input: nums = [5,4,-1,7,8]
-        //Output: 23
-        /// </summary>
 
+        /* Que 8 Self-reflection
+        * Time Complexity is O(N)
+        * Space Complexity is O(1) */
+
+        //Question 9
         private static int MaximumSum(int[] arr)
         {
             try
             {
-                //write your code here.
-                return 0;
+                int max = arr[0];
+                int currentMax = arr[0];
+                for (int i = 1; i < arr.Length; i++)
+                {
+                    currentMax = System.Math.Max((currentMax + arr[i]), arr[i]);
+                    max = System.Math.Max(max, currentMax);
+                }
+
+                return max;
+
             }
             catch (Exception)
             {
@@ -357,24 +417,35 @@ namespace Programming_Assignment_2_Summer_2021
             }
         }
 
+        /* Que 9 Self-reflection
+         * Learned and implemented built in Math method
+         * Time Complexity is O(N)
+         * Space Complexity is O(1) */
+
+
         //Question 10
-        /// <summary>
-        //You are given an integer array cost where cost[i] is the cost of ith step on a staircase.Once you pay the cost, you can either climb one or two steps.
-        //You can either start from the step with index 0, or the step with index 1.
-        //Return the minimum cost to reach the top of the floor.
-        //Example 1:
-        //Input: cost = [10, 15, 20]
-        //Output: 15
-        //Explanation: Cheapest is: start on cost[1], pay that cost, and go to the top.
 
-        /// </summary>
 
-        private static int MinCostToClimb(int[] costs)
+       public static int MinCostToClimb(int[] costs)
         {
             try
             {
-                //write your code here.
+                if (costs.Length > 1)
+                {
+                    int result = costs[0];
+                    if (costs.Length > 2)
+                    {
+                        for (int i = 2; i < costs.Length; i++)
+                        {
+                            costs[i] = costs[i] + (costs[i - 1] < costs[i - 2] ? costs[i - 1] : costs[i - 2]);
+                        }
+                        result = costs[costs.Length - 1] < costs[costs.Length - 2] ? costs[costs.Length - 1] : costs[costs.Length - 2];
+                    }
+                    return result;
+                }
                 return 0;
+
+
 
             }
             catch (Exception)
@@ -383,5 +454,12 @@ namespace Programming_Assignment_2_Summer_2021
                 throw;
             }
         }
+
+        /* Que 10 Self-reflection
+        * Learned and implemented the concept of dynamic programming
+        * Time Complexity is O(N)
+        * Space Complexity is O(1) */
+
     }
+
 }
